@@ -1,6 +1,8 @@
 spring:
   application:
     name: SLOT-API-GATEWAY
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
 
 server:
   port: ${SERVER_PORT:8080}
@@ -8,7 +10,7 @@ server:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: ${EUREKA_HOST:http://localhost:8761/eureka/}
     register-with-eureka: true
     fetch-registry: true
 
@@ -16,24 +18,3 @@ eureka:
     prefer-ip-address: true
     instance-id: ${spring.application.name}
 
-management:
-  endpoint:
-    health:
-      show-details: always
-  endpoints:
-    web:
-      exposure:
-        include: "*"
-
-jwt:
-  secret: ${JWT_SECRET:your-super-secret-key-that-is-at-least-32-bytes-long}
-  issuer: slot-auth-service
-
-
-logging:
-  level:
-    org.springframework.cloud.gateway: TRACE
-    org.springframework.cloud.loadbalancer: TRACE
-    org.springframework.web.servlet.function: TRACE
-  pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%class] - %msg%n"
