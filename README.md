@@ -79,7 +79,7 @@ public class GatewayConfig {
 
 ## Phase 2 - Security
 ────────────────────────
-### Step 4 JWT Authentication
+### Step 4 JWT Authentication - Symmetric Key HS256(HmacSHA256)
 API Gateway becomes the security perimeter of  microservices architecture.
 ```
 <dependency>
@@ -116,10 +116,100 @@ Which URLs require authentication?
 Which filter runs first?
 
 Which filter runs after?
+```
 
-#### JwtAuthenticationFilter
-#### JwtService
+#### JwtAuthenticationFilter - Filter that intercepts requests and validates JWT tokens.
+```java
 
+String header = request.getHeader(HttpHeaders.AUTHORIZATION);
+String token = header.substring(7);
+java.util.Optional<JwtUser> optionalJwtUser = jwtService.validateToken(token);
+
+if (optionalJwtUser.isPresent()) {
+    JwtUser jwtUser = optionalJwtUser.get();
+
+    UsernamePasswordAuthenticationToken authentication =
+        new UsernamePasswordAuthenticationToken(
+                jwtUser,
+                null,
+                jwtUser.getAuthorities());
+
+    SecurityContextHolder.getContext().setAuthentication(authentication);
+} else {
+    log.warn("JWT authentication failed");
+    SecurityContextHolder.clearContext();
+    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid or expired JWT token");
+    return;
+}
+
+```
+
+#### JwtService - Service that handles JWT token validation & payload parsing.
+```
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class JwtServiceImpl implements JwtService {
+
+    private final JwtProperties jwtProperties;
+
+    private SecretKey secretKey;
+    private JwtParser jwtParser;
+
+    @PostConstruct
+    void init() {
+        secretKey = Keys.hmacShaKeyFor(
+                jwtProperties.getSecret()
+                        .getBytes(StandardCharsets.UTF_8));
+
+        jwtParser = Jwts.parser()
+                .verifyWith(secretKey)
+                .requireIssuer(jwtProperties.getIssuer())
+                .build();
+    }
+
+    @Override
+    public Optional<JwtUser> validateToken(String token) {
+        try {
+            Claims claims =  jwtParser
+                    .parseSignedClaims(token)
+                    .getPayload();
+
+            String userId = claims.getSubject();
+            String type = claims.get("type", String.class);
+            String role = claims.get("role", String.class);
+
+            if (userId == null || role == null || type == null) {
+                return Optional.empty();
+            }
+            JwtUser jwtUser =
+                    new JwtUser(
+                            userId,
+                            type,
+                            role
+                    );
+
+            return Optional.of(jwtUser);
+        } catch (JwtException | IllegalArgumentException ex) {
+            log.debug("JWT validation failed: {}", ex.getMessage());
+            return Optional.empty();
+        }
+    }
+
+}
+```
+#### CustomPrincipal - Custom implementation of UserDetails that represents the authenticated user.
+```
+public record JwtUser(
+
+        String userId,
+
+        String role,
+
+        String type
+
+) {}
+```
 
 ### Step 5 Authorization
 ### Step 6 Token Relay

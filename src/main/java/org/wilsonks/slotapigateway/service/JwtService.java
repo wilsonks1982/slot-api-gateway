@@ -1,7 +1,10 @@
 package org.wilsonks.slotapigateway.service;
 
 import io.jsonwebtoken.Claims;
+import org.wilsonks.slotapigateway.model.JwtUser;
+
+import java.util.Optional;
 
 public interface JwtService {
-    Claims validateToken(String token);
+    Optional<JwtUser> validateToken(String token);
 }
