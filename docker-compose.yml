@@ -1,9 +1,29 @@
 services:
   eureka-server:
-    image: tykhegaming/slot-api-server:latest
-    container_name: slot-api-server
+    image: tykhegaming/slot-eureka-server:latest
+    container_name: slot-eureka-server
+    ports:
+      - "8761:8761"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1024M
+        reservations:
+          cpus: '1.0'
+          memory: 1024M
+    environment:
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_THREADS_VIRTUAL_ENABLED=true
+      - JAVA_OPTS=-XX:+UseContainerSupport -XX:InitialRAMPercentage=75.0 -XX:MaxRAMPercentage=75.0 -XX:MaxMetaspaceSize=384m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError -Xlog:gc:stdout:time,uptime,level,tags
+
+  slot-api-gateway:
+    image: tykhegaming/slot-api-gateway:latest
+    container_name: slot-api-gateway
     ports:
       - "8080:8080"
+    depends_on:
+      - eureka-server
     deploy:
         resources:
             limits:
@@ -13,9 +33,9 @@ services:
               cpus: '1.0'
               memory: 1024M
     environment:
-      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_PROFILES_ACTIVE=dev
       - SPRING_THREADS_VIRTUAL_ENABLED=true
-      - JWT_SECRET:your-super-secret-key-that-is-at-least-32-bytes-long
-      - EUREKA_HOST:http://localhost:8761/eureka/
-      - SERVER_PORT:8080
+      - JWT_SECRET=your-super-secret-key-that-is-at-least-32-bytes-long
+      - EUREKA_HOST=http://slot-eureka-server:8761/eureka/
+      - SERVER_PORT=8080
       - JAVA_OPTS=-XX:+UseContainerSupport -XX:InitialRAMPercentage=75.0 -XX:MaxRAMPercentage=75.0 -XX:MaxMetaspaceSize=384m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError -Xlog:gc:stdout:time,uptime,level,tags
