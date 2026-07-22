@@ -17,6 +17,16 @@ services:
       - SPRING_THREADS_VIRTUAL_ENABLED=true
       - JAVA_OPTS=-XX:+UseContainerSupport -XX:InitialRAMPercentage=75.0 -XX:MaxRAMPercentage=75.0 -XX:MaxMetaspaceSize=384m -XX:+UseG1GC -XX:+ExitOnOutOfMemoryError -Xlog:gc:stdout:time,uptime,level,tags
 
+  jaeger:
+    image: jaegertracing/all-in-one:latest
+    container_name: jaeger
+    ports:
+      - "16686:16686"
+      - "4317:4317"
+      - "4318:4318"
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+
   slot-api-gateway:
     image: tykhegaming/slot-api-gateway:latest
     container_name: slot-api-gateway

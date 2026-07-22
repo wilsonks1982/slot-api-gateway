@@ -1,11 +1,15 @@
 management:
-  endpoint:
-    health:
-      show-details: always
+  tracing:
+    enabled: true
+    sampling:
+      probability: 0.1
+  otlp:
+    tracing:
+      endpoint: http://localhost:4318/v1/traces
   endpoints:
     web:
       exposure:
-        include: info, health, metrics, prometheus
+        include: health,info,prometheus
 
 jwt:
   secret: ${JWT_SECRET}
@@ -18,4 +22,4 @@ logging:
     org.springframework.cloud.loadbalancer: INFO
     org.springframework.web.servlet.function: INFO
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%X{userId}] [%X{type}] [%X{role}]  %-5level [%logger{0}] - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}][%X{traceId}][%X{spanId}] [%X{userId}][%X{type}][%X{role}] [%-5level][%logger{0}] - %msg%n"
