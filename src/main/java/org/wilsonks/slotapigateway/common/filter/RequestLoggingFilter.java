@@ -1,5 +1,6 @@
 package org.wilsonks.slotapigateway.common.filter;
 
+
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -9,18 +10,13 @@ import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.slf4j.MDC;
 
 import java.io.IOException;
-import java.util.Optional;
-import java.util.UUID;
 
 @Component
 @Slf4j
-@Order(Ordered.HIGHEST_PRECEDENCE)
-public class CorrelationIdFilter extends OncePerRequestFilter {
-    public static final String CORRELATION_ID_HEADER = "X-Correlation-Id";
-    public static final String MDC_KEY = "correlationId";
+@Order(Ordered.HIGHEST_PRECEDENCE + 1)
+public class RequestLoggingFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(
@@ -29,17 +25,31 @@ public class CorrelationIdFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        String correlationId =
-                Optional.ofNullable(request.getHeader(CORRELATION_ID_HEADER))
-                        .filter(id -> !id.isBlank())
-                        .orElse(UUID.randomUUID().toString());
+        long start = System.currentTimeMillis();
 
-        MDC.put(MDC_KEY, correlationId);
-        response.setHeader(CORRELATION_ID_HEADER, correlationId);
         try {
+
+            log.info(
+                    "Incoming Request method={} uri={} ip={}",
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    request.getRemoteAddr());
+
             filterChain.doFilter(request, response);
+
         } finally {
-            MDC.clear();
+
+            long duration =
+                    System.currentTimeMillis() - start;
+
+            log.info(
+                    "Completed Request method={} uri={} status={} duration={}ms",
+                    request.getMethod(),
+                    request.getRequestURI(),
+                    response.getStatus(),
+                    duration);
         }
+
     }
+
 }

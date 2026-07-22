@@ -55,8 +55,8 @@ public class JwtServiceImpl implements JwtService {
             JwtUser jwtUser =
                     new JwtUser(
                             userId,
-                            type,
-                            role
+                            role,
+                            type
                     );
 
             return Optional.of(jwtUser);

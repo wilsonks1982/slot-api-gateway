@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -51,7 +52,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             jwtUser.getAuthorities());
 
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            log.info("JWT is valid. User: {}", jwtUser);
+            MDC.put("userId", jwtUser.userId());
+            MDC.put("role", jwtUser.role());
+            MDC.put("type", jwtUser.type());
         } else {
             log.warn("JWT authentication failed");
             SecurityContextHolder.clearContext();
@@ -59,6 +62,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        filterChain.doFilter(request, response);
+        try {
+            filterChain.doFilter(request, response);
+
+        } finally {
+            SecurityContextHolder.clearContext();
+        }
     }
 }
