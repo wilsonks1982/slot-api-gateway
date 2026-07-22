@@ -1,4 +1,4 @@
-package org.wilsonks.slotapigateway.filter;
+package org.wilsonks.slotapigateway.security.filter;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -11,8 +11,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.wilsonks.slotapigateway.model.JwtUser;
-import org.wilsonks.slotapigateway.service.JwtService;
+import org.wilsonks.slotapigateway.security.model.JwtUser;
+import org.wilsonks.slotapigateway.security.service.JwtService;
 
 import java.io.IOException;
 

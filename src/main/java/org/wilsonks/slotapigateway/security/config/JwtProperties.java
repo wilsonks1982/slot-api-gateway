@@ -1,4 +1,4 @@
-package org.wilsonks.slotapigateway.config;
+package org.wilsonks.slotapigateway.security.config;
 
 
 import jakarta.annotation.PostConstruct;

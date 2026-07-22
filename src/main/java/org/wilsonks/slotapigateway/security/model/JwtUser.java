@@ -1,4 +1,4 @@
-package org.wilsonks.slotapigateway.model;
+package org.wilsonks.slotapigateway.security.model;
 
 
 import org.springframework.security.core.GrantedAuthority;

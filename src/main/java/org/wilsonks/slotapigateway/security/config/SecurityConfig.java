@@ -1,16 +1,15 @@
-package org.wilsonks.slotapigateway.config;
+package org.wilsonks.slotapigateway.security.config;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.wilsonks.slotapigateway.filter.JwtAuthenticationFilter;
+import org.wilsonks.slotapigateway.security.filter.JwtAuthenticationFilter;
 
 @Configuration
 @RequiredArgsConstructor

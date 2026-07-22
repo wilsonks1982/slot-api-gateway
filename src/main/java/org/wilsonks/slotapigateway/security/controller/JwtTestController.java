@@ -1,6 +1,5 @@
-package org.wilsonks.slotapigateway.controller;
+package org.wilsonks.slotapigateway.security.controller;
 
-import io.jsonwebtoken.Claims;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -8,8 +7,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.wilsonks.slotapigateway.model.JwtUser;
-import org.wilsonks.slotapigateway.service.JwtService;
+import org.wilsonks.slotapigateway.security.model.JwtUser;
+import org.wilsonks.slotapigateway.security.service.JwtService;
 
 import java.util.Optional;
 

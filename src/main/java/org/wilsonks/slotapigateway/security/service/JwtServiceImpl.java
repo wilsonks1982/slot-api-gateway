@@ -1,4 +1,4 @@
-package org.wilsonks.slotapigateway.service;
+package org.wilsonks.slotapigateway.security.service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtException;
@@ -9,8 +9,8 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.wilsonks.slotapigateway.config.JwtProperties;
-import org.wilsonks.slotapigateway.model.JwtUser;
+import org.wilsonks.slotapigateway.security.config.JwtProperties;
+import org.wilsonks.slotapigateway.security.model.JwtUser;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;

@@ -1,4 +1,4 @@
-package org.wilsonks.slotapigateway.exception;
+package org.wilsonks.slotapigateway.common.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.MDC;

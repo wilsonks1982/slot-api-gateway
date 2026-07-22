@@ -18,4 +18,4 @@ logging:
     org.springframework.cloud.loadbalancer: INFO
     org.springframework.web.servlet.function: INFO
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%class] - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}] [%X{userId}]  %-5level [%logger{0}] - %msg%n"
