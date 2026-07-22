@@ -10,10 +10,11 @@ import org.wilsonks.slotapigateway.security.model.JwtUser;
 
 @Slf4j
 @Component
-public class IdentityHeaderFilter {
+public class GatewayRequestHeaderFilter {
     public static final String USER_ID_HEADER = "X-User-Id";
     public static final String USER_ROLE_HEADER = "X-User-Role";
     public static final String USER_TYPE_HEADER = "X-User-Type";
+    public static final String CORRELATION_ID_HEADER = "X-Correlation-Id";
 
     public static final String MDC_USER_ID_KEY = "userId";
 
@@ -36,6 +37,7 @@ public class IdentityHeaderFilter {
                 .header(USER_ID_HEADER, userId)
                 .header(USER_ROLE_HEADER, role)
                 .header(USER_TYPE_HEADER, type)
+                .header(CORRELATION_ID_HEADER, MDC.get("correlationId"))
                 .build();
     }
 
