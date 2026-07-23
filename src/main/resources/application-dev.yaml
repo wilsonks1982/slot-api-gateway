@@ -21,5 +21,7 @@ logging:
     org.springframework.cloud.gateway: INFO
     org.springframework.cloud.loadbalancer: INFO
     org.springframework.web.servlet.function: INFO
+    io.github.resilience4j.circuitbreaker: DEBUG
+    org.springframework.cloud.circuitbreaker: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} [%X{correlationId}][%X{traceId}][%X{spanId}] [%X{userId}][%X{type}][%X{role}] [%-5level][%logger{0}] - %msg%n"

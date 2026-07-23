@@ -49,18 +49,12 @@ Spring publishes an observation, and multiple independent handlers react to it w
 ### Step 10 Timeouts
 ### Step 11 Retry
 ### Step 12 Circuit Breaker
+#### Step 1: Add the Resilience4j dependency.
+#### Step 2: Configure the Circuit Breaker properties in application.yml.
 ### Step 13 Fallback
 
 ## Phase 4 - Traffic Management
 ────────────────────────
 ### Step 14 Rate Limiting
 ### Step 15 CORS
-### Step 16 Compression
 ### Step 17 Caching
-
-## Phase 5 - Production
-────────────────────────
-### Step 18 API Versioning
-### Step 19 Maintenance Mode
-### Step 20 Blue/Green Deployment
-### Step 21 Canary Release

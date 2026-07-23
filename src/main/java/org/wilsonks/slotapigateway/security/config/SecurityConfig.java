@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
 
                         .requestMatchers(
-                                "/api/jwt-test",
+                                "/fallback/**",
+                                "/api/chaos/**",
                                 "/api/employees/login",
                                 "/api/players/session",
                                 "/actuator/**"
