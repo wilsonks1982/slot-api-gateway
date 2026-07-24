@@ -25,4 +25,17 @@ public class FallbackController {
                         "message", "Authentication service is temporarily unavailable."
                 ));
     }
+
+    @RequestMapping("/bank")
+    public ResponseEntity<Map<String, Object>> bankFallback(HttpServletRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of(
+                        "status", 503,
+                        "error", "Service Unavailable",
+                        "by", "FallbackController",
+                        "message", "Bank service is temporarily unavailable."
+                ));
+    }
 }

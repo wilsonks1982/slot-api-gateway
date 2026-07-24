@@ -1,6 +1,6 @@
 spring:
   application:
-    name: SLOT-API-GATEWAY
+    name: slot-api-gateway
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
@@ -24,9 +24,19 @@ resilience4j:
       auth-service:
         timeout-duration: 5s
         cancel-running-future: true
+      bank-service:
+        timeout-duration: 5s
+        cancel-running-future: true
   circuitbreaker:
     instances:
       auth-service:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 30s
+        permitted-number-of-calls-in-half-open-state: 3
+        automatic-transition-from-open-to-half-open-enabled: true
+      bank-service:
         sliding-window-size: 10
         minimum-number-of-calls: 5
         failure-rate-threshold: 50
