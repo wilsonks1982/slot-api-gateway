@@ -38,4 +38,17 @@ public class FallbackController {
                         "message", "Bank service is temporarily unavailable."
                 ));
     }
+
+    @RequestMapping("/floor")
+    public ResponseEntity<Map<String, Object>> floorFallback(HttpServletRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of(
+                        "status", 503,
+                        "error", "Service Unavailable",
+                        "by", "FallbackController",
+                        "message", "Floor management service is temporarily unavailable."
+                ));
+    }
 }

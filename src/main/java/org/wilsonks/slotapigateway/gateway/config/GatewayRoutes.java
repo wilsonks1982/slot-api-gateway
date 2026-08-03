@@ -24,7 +24,6 @@ public class GatewayRoutes {
 
         // 1. Auth Service routes
         RouterFunction<ServerResponse> authRoutes = route("slot-auth-service")
-                .route(path("/api/chaos/**"), http())
                 .route(path("/api/players/**"), http())
                 .route(path("/api/employees/**"), http())
                 .before(gatewayRequestHeaderFilter::apply)
@@ -44,7 +43,14 @@ public class GatewayRoutes {
                 .filter(lb("slot-bank-service"))
                 .build();
 
+        // 3. Floor Management Service routes
+        RouterFunction<ServerResponse> floorManagementRoutes = route("slot-floor-management-service")
+                .route(path("/api/floor/**"), http())
+                .before(gatewayRequestHeaderFilter::apply)
+                .filter(lb("slot-floor-management-service"))
+                .build();
+
         // 3. combine all routes
-        return authRoutes.and(bankRoutes);
+        return authRoutes.and(bankRoutes).and(floorManagementRoutes);
     }
 }
