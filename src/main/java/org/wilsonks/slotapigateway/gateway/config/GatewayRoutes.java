@@ -47,6 +47,9 @@ public class GatewayRoutes {
         RouterFunction<ServerResponse> floorManagementRoutes = route("slot-floor-management-service")
                 .route(path("/api/floor/**"), http())
                 .before(gatewayRequestHeaderFilter::apply)
+                .filter(circuitBreaker(config -> config
+                        .setId("floor-management-service")
+                        .setFallbackUri("forward:/fallback/floor")))
                 .filter(lb("slot-floor-management-service"))
                 .build();
 
