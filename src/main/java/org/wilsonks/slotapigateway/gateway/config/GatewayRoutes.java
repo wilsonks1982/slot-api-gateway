@@ -35,7 +35,7 @@ public class GatewayRoutes {
 
         // 2. Bank Service routes
         RouterFunction<ServerResponse> bankRoutes = route("slot-bank-service")
-                .route(path("/api/accounts/**"), http())
+                .route(path("/api/bank/**"), http())
                 .before(gatewayRequestHeaderFilter::apply)
                 .filter(circuitBreaker(config -> config
                         .setId("bank-service")
@@ -53,7 +53,17 @@ public class GatewayRoutes {
                 .filter(lb("slot-floor-management-service"))
                 .build();
 
-        // 3. combine all routes
-        return authRoutes.and(bankRoutes).and(floorManagementRoutes);
+        // 4. Reel Game Controller Service routes
+        RouterFunction<ServerResponse> reelGameControllerRoutes = route("slot-reel-game-controller-service")
+                .route(path("/api/reel/**"), http())
+                .before(gatewayRequestHeaderFilter::apply)
+                .filter(circuitBreaker(config -> config
+                        .setId("reel-game-controller-service")
+                        .setFallbackUri("forward:/fallback/reel-game")))
+                .filter(lb("slot-reel-game-controller-service"))
+                .build();
+
+        // Combine all routes
+        return authRoutes.and(bankRoutes).and(floorManagementRoutes).and(reelGameControllerRoutes);
     }
 }
