@@ -51,4 +51,17 @@ public class FallbackController {
                         "message", "Floor management service is temporarily unavailable."
                 ));
     }
+
+    @RequestMapping("/reel-game")
+    public ResponseEntity<Map<String, Object>> reelGameFallback(HttpServletRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .body(Map.of(
+                        "status", 503,
+                        "error", "Service Unavailable",
+                        "by", "FallbackController",
+                        "message", "Reel game controller service is temporarily unavailable."
+                ));
+    }
 }
